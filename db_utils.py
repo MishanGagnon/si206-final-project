@@ -51,7 +51,7 @@ def get_oldest_date(table_name, date_col_name, conn):
     else:
         return None
 
-def shift_date_back_pandas(date_str, days):
+def shift_date(date_str, days):
     """
     Shifts a given date by a specified number of days using pandas.
     
@@ -62,14 +62,14 @@ def shift_date_back_pandas(date_str, days):
     Returns:
     str: The shifted date in 'YYYY-MM-DD' format.
     """
-    # Convert the date string to a pandas Timestamp
     date = pd.to_datetime(date_str)
     
-    # Shift the date by the specified number of days
-    new_date = date_pd.Timedelta(days=days)
+    # Create a Timedelta and shift the date by the specified number of days
+    new_date = date + pd.Timedelta(days=days)
     
     # Convert the Timestamp back to a string in 'YYYY-MM-DD' format
     return new_date.strftime('%Y-%m-%d')
+
 def insert_data_from_df(df, table_name, date_col_name, conn):
 
     # Create a cursor object using the connection
