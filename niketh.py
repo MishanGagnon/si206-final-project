@@ -125,7 +125,7 @@ print(oldestDate)
 if oldestDate == None:
     oldestDate = '2024-01-01'
 
-batting_averages_by_month = get_team_batting_average_by_month(team, shift_date_months(oldestDate,-24), shift_date_months(oldestDate, -1))
+batting_averages_by_month = get_team_batting_average_by_month(team, shift_date_months(oldestDate,-24), oldestDate)
 
 create_table_from_df(batting_averages_by_month, TABLE_NAME, conn)
 insert_data_from_df(batting_averages_by_month, TABLE_NAME,'DateTime', conn)
