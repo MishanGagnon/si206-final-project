@@ -1,6 +1,7 @@
 import pybaseball
 import pandas as pd
 import numpy as np
+from db_utils import *
 
 def get_team_batting_average_by_month(team, start_date, end_date):
     try:
@@ -96,20 +97,33 @@ def create_team_dataframe():
 
     return team_df
 
-# Example usage
-team_dataframe = create_team_dataframe()
-print(team_dataframe)
 
 
-# Example usage
-team = 'NYM'  # New York Mets (using Fangraphs team ID)
-start = "2019-01-01"  # Fetch data from 2018 to 2020 for now
+DB_NAME = "test.db"
+conn = set_up_database(DB_NAME)
+
+team = "NYM"
+start = "2010-01-01"
 end = "2020-01-01"
+batting_averages_by_month = get_team_batting_average_by_month(team, start, end)
+TABLE_NAME = "batting_average_by_month"
+create_table_from_df(batting_averages_by_month, TABLE_NAME, conn)
+insert_data_from_df(batting_averages_by_month, TABLE_NAME,'date', conn)
+
+# Example usage
+# team_dataframe = create_team_dataframe()
+# print(team_dataframe)
+
+
+# Example usage
+# team = 'NYM'  # New York Mets (using Fangraphs team ID)
+# start = "2000-01-01"  # Fetch data from 2018 to 2020 for now
+# end = "2020-01-01"
 
 # Get team batting averages by month
-batting_averages_by_month = get_team_batting_average_by_month(team, start, end)
-batting_averages_by_month.info()
-if not batting_averages_by_month.empty:
-    print(batting_averages_by_month)
-else:
-    print("Unable to retrieve batting averages by month.")
+# batting_averages_by_month = get_team_batting_average_by_month(team, start, end)
+# batting_averages_by_month.info()
+# if not batting_averages_by_month.empty:
+#     print(batting_averages_by_month)
+# else:
+#     print("Unable to retrieve batting averages by month.")
