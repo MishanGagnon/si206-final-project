@@ -1,6 +1,9 @@
 Caluculation for pytrends, average interest for ice cream out of a hundred
-58.44
+Average google trends interest in ice cream: 58.44/100
 
 calulation mean battting avg in 2022 for mets from baseball API
-New York Mets batting average is 0.24
+New York Mets batting average is 0.236
+
+How many weather measurements do we have recorded
+Temp Measurements: 75
 

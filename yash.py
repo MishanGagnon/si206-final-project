@@ -67,7 +67,7 @@ def main():
     #end_date = "2023-12-31"
     
     
-    DB_NAME = "yash.db"
+    DB_NAME = "test.db"
     TABLE_NAME = "avg_temp"
     
     conn = set_up_database(DB_NAME)
@@ -88,7 +88,7 @@ def main():
     cur = conn.cursor()
 
     # Execute the SELECT query
-    cur.execute("SELECT * FROM avg_temp")
+    cur.execute("SELECT COUNT(*) FROM avg_temp")
     
     print(cur.fetchall())
 
