@@ -47,20 +47,38 @@ def get_weather_data(latitude, longitude, start_date, end_date):
 
     daily_dataframe = pd.DataFrame(data=daily_data)
 
-    # Calculate average temperature
+    # Calculate average temperature and round to the nearest tenth
     daily_dataframe['avg_temp_fahrenheit'] = (daily_dataframe['temperature_2m_max'] + daily_dataframe['temperature_2m_min']) / 2
+    daily_dataframe['avg_temp_fahrenheit'] = daily_dataframe['avg_temp_fahrenheit'].round(1)
+    
     # Drop columns for min and max temperature
     daily_dataframe.drop(columns=['temperature_2m_max', 'temperature_2m_min'], inplace=True)
     
-    daily_dataframe.info()
+    
+    return daily_dataframe
+
+
+        
+    
+def main():
+    #latitude = 42.3314
+    #longitude = -83.045753
+    #start_date = "2023-01-01"
+    #end_date = "2023-12-31"
+    
     
     DB_NAME = "yash.db"
     TABLE_NAME = "avg_temp"
-    conn = set_up_database(DB_NAME)
     
-    # Rename the column in the DataFrame
-    daily_dataframe.rename(columns={'avg_temp (fahrenheit)': 'avg_temp_fahrenheit'}, inplace=True)
+    conn = set_up_database(DB_NAME)
+        
+    # def pull_25_new_search(conn, table_name):
+    oldestDate = get_oldest_date(TABLE_NAME,'date',conn)
+    if oldestDate == None:
+        oldestDate = '2023-09-01'
 
+    daily_dataframe = get_weather_data(42.3314, -83.045753, shift_date(oldestDate,-24), oldestDate)
+        
     # Adjust the table creation to reflect the new column name
     create_table_from_df(daily_dataframe, TABLE_NAME, conn)
 
@@ -72,21 +90,9 @@ def get_weather_data(latitude, longitude, start_date, end_date):
     # Execute the SELECT query
     cur.execute("SELECT * FROM avg_temp")
     
-    return daily_dataframe
-
-
-def main():
-    latitude = 42.3314
-    longitude = -83.045753
-    start_date = "2023-01-01"
-    end_date = "2023-12-31"
-
-    weather_data_from_openmeteo = get_weather_data(latitude, longitude, start_date, end_date)
-
-    if weather_data_from_openmeteo is not None:
-        print("\nAverage Temperature of Days in 2023 Calendar Year:")
-        print(weather_data_from_openmeteo)
+    print(cur.fetchall())
 
 
 if __name__ == "__main__":
     main()
+
