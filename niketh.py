@@ -117,12 +117,12 @@ insert_data_simple(team_dataframe, "team_index", conn)
 
 TABLE_NAME = "batting_average_by_month"
 team = "NYM"
-end = "2023-01-01"
+end = "2024-01-01"
 
 # def pull_25_new_search(conn, table_name):
-oldestDate = get_oldest_date(TABLE_NAME,'date',conn)
+oldestDate = get_oldest_date(TABLE_NAME,'DateTime',conn)
 if oldestDate == None:
-    oldestDate = '2023-01-01'
+    oldestDate = '2024-01-01'
 
 batting_averages_by_month = get_team_batting_average_by_month(team, shift_date_months(oldestDate,-36), shift_date_months(oldestDate, -1))
 
