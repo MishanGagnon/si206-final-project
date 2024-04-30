@@ -132,7 +132,7 @@ insert_data_from_df(batting_averages_by_month, TABLE_NAME,'DateTime', conn)
 cur = conn.cursor()
 
 # Execute the SELECT query
-cur.execute("SELECT * FROM batting_average_by_month")
+cur.execute("SELECT COUNT(*) FROM batting_average_by_month")
 
 # Fetch and print the results
 print(cur.fetchall())

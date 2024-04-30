@@ -10,7 +10,7 @@ def main():
         
         # calculations for pytrends
         cur.execute("SELECT AVG(ice_cream) FROM interest_over_time")
-        file.write(f"Caluculation for pytrends, average interest for ice cream out of a hundred\n")
+        file.write(f"Calculation for pytrends, average interest for ice cream out of a hundred\n")
         file.write(f"Average google trends interest in ice cream: {cur.fetchone()[0]}/100\n\n")
 
         #calulation mean battting avg in 2022 for mets
@@ -20,7 +20,7 @@ def main():
         JOIN team_index t ON b.TeamID = t.TeamID
         WHERE Year BETWEEN 2022 AND 2023
         """)
-        file.write(f"calulation mean battting avg in 2022 for mets from baseball API\n")
+        file.write(f"Calculation mean battting avg in 2022 for mets from baseball API\n")
         ba, team = cur.fetchone()
         file.write(f"{team} batting average is {round(ba,3)}\n\n")
 
