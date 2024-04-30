@@ -96,19 +96,17 @@ def shift_date(date_str, days):
     return new_date.strftime('%Y-%m-%d')
 def shift_date_months(date_str, months):
     """
-    Shifts a given date by a specified number of days using pandas.
-    
+    Shifts a given date by a specified number of months.
+
     Parameters:
-    date_str (str): The date in 'YYYY-MM-DD' format.
-    days (int): The number of days to shift the date. Negative for past, positive for future.
-    
+    date_str (str): The input date string in the format 'YYYY-MM-DD'.
+    months (int): The number of months to shift the date by.
+
     Returns:
-    str: The shifted date in 'YYYY-MM-DD' format.
+    str: The shifted date in the format 'YYYY-MM-DD'.
     """
     date = pd.to_datetime(date_str)
-    
-    new_date = date + pd.Timedelta(months=months)
-    
+    new_date = date - pd.DateOffset(months=months)
     return new_date.strftime('%Y-%m-%d')
 
 def insert_data_from_df(df, table_name, date_col_name, conn):
