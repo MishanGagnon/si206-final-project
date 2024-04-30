@@ -28,7 +28,7 @@ oldestDate = get_oldest_date(TABLE_NAME,'date',conn)
 if oldestDate == None:
     oldestDate = '2023-09-01'
 
-interest_over_time_df = request_search_range_df(shift_date(oldestDate,-24),oldestDate, ["ice cream","mets"])
+interest_over_time_df = request_search_range_df(shift_date(oldestDate,-25),shift_date(oldestDate, -1), ["ice cream","tigers","food near me"])
 
 create_table_from_df(interest_over_time_df, TABLE_NAME, conn)
 insert_data_from_df(interest_over_time_df, TABLE_NAME,'date', conn)
