@@ -37,6 +37,7 @@ def get_team_batting_average_by_month(team, start_date, end_date):
             # Calculate batting average (H/AB)
             monthly_stats['BA'] = monthly_stats.apply(lambda x: x['H'] / x['AB'] if x['AB'] != 0 else np.nan, axis=1)
             monthly_stats['Year'] = year  # Add year for tracking
+            monthly_stats['TeamID'] = 19
             
             # Remove rows with null or inf values in the batting average column
             monthly_stats = monthly_stats.replace([np.inf, -np.inf], np.nan).dropna(subset=['BA'])
@@ -82,11 +83,6 @@ def create_team_dataframe():
         {"Team": "San Diego Padres", "Abbreviation": "SDP"},
         {"Team": "San Francisco Giants", "Abbreviation": "SFG"},
         {"Team": "Seattle Mariners", "Abbreviation": "SEA"},
-        {"Team": "St. Louis Cardinals", "Abbreviation": "STL"},
-        {"Team": "Tampa Bay Rays", "Abbreviation": "TBR"},
-        {"Team": "Texas Rangers", "Abbreviation": "TEX"},
-        {"Team": "Toronto Blue Jays", "Abbreviation": "TOR"},
-        {"Team": "Washington Nationals", "Abbreviation": "WSH"}
     ]
 
     # Create DataFrame
@@ -97,18 +93,49 @@ def create_team_dataframe():
 
     return team_df
 
+def insert_data_simple(df, table_name, conn):
 
+    # Create a cursor object using the connection
+    cur = conn.cursor()
+    # Prepare the INSERT INTO statement
+    placeholders = ', '.join(['?'] * len(df.columns))
+    columns = ', '.join(df.columns)
+    sql = f"INSERT INTO {table_name} ({columns}) VALUES ({placeholders})"
+    # Insert each row from the DataFrame
+    for row in df.itertuples(index=False, name=None):
+        cur.execute(sql, row)
+        conn.commit()
+    
+    # Commit the transactions
 
 DB_NAME = "test.db"
 conn = set_up_database(DB_NAME)
 
-team = "NYM"
-start = "2010-01-01"
-end = "2020-01-01"
-batting_averages_by_month = get_team_batting_average_by_month(team, start, end)
+team_dataframe = create_team_dataframe()
+create_table_from_df(team_dataframe, "team_index", conn)
+insert_data_simple(team_dataframe, "team_index", conn)
+
 TABLE_NAME = "batting_average_by_month"
+team = "NYM"
+end = "2023-01-01"
+
+# def pull_25_new_search(conn, table_name):
+oldestDate = get_oldest_date(TABLE_NAME,'date',conn)
+if oldestDate == None:
+    oldestDate = '2023-01-01'
+
+batting_averages_by_month = get_team_batting_average_by_month(team, shift_date(oldestDate,-1095), oldestDate)
+
 create_table_from_df(batting_averages_by_month, TABLE_NAME, conn)
-insert_data_from_df(batting_averages_by_month, TABLE_NAME,'date', conn)
+insert_data_from_df(batting_averages_by_month, TABLE_NAME,'DateTime', conn)
+
+cur = conn.cursor()
+
+# Execute the SELECT query
+cur.execute("SELECT * FROM batting_average_by_month")
+
+# Fetch and print the results
+print(cur.fetchall())
 
 # Example usage
 # team_dataframe = create_team_dataframe()
@@ -123,7 +150,7 @@ insert_data_from_df(batting_averages_by_month, TABLE_NAME,'date', conn)
 # Get team batting averages by month
 # batting_averages_by_month = get_team_batting_average_by_month(team, start, end)
 # batting_averages_by_month.info()
-# if not batting_averages_by_month.empty:
+# if not batting_averages_by_month.empty:m
 #     print(batting_averages_by_month)
 # else:
 #     print("Unable to retrieve batting averages by month.")
