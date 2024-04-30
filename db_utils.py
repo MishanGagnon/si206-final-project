@@ -35,20 +35,24 @@ def create_table_from_df(df, table_name, conn):
 
 
 def get_oldest_date(table_name, date_col_name, conn):
+    try:
+        # Create a cursor object using the connection
+        cur = conn.cursor()
 
-    # Create a cursor object using the connection
-    cur = conn.cursor()
-    
-    # Execute the query to find the oldest date
-    cur.execute(f"SELECT MIN({date_col_name}) FROM {table_name}")
-    
-    # Fetch the result
-    result = cur.fetchone()
-    
-    # Check if the result is not None
-    if result and result[0]:
-        return result[0]
-    else:
+        # Execute the query to find the oldest date
+        cur.execute(f"SELECT MIN({date_col_name}) FROM {table_name}")
+        
+        # Fetch the result
+        result = cur.fetchone()
+
+        # Check if the result is not None and contains a date
+        if result and result[0]:
+            return result[0]
+        else:
+            return None
+
+    except Exception as e:
+        # Handle exceptions, which could occur if the table does not exist or query fails
         return None
 
 def shift_date(date_str, days):
