@@ -106,7 +106,7 @@ def shift_date_months(date_str, months):
     str: The shifted date in the format 'YYYY-MM-DD'.
     """
     date = pd.to_datetime(date_str)
-    new_date = date - pd.DateOffset(months=months)
+    new_date = date + pd.DateOffset(months=months)
     return new_date.strftime('%Y-%m-%d')
 
 def insert_data_from_df(df, table_name, date_col_name, conn):
