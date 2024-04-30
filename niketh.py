@@ -16,7 +16,7 @@ def get_team_batting_average_by_month(team, start_date, end_date):
         end_year = int(end_date_temp)  
         
         # Iterate over the specified range of years
-        for year in range(start_year, end_year + 1):
+        for year in range(start_year, end_year):
             # Fetch team game logs for the year
             yearly_logs = pybaseball.team_game_logs(year, team)
             
@@ -121,10 +121,11 @@ end = "2024-01-01"
 
 # def pull_25_new_search(conn, table_name):
 oldestDate = get_oldest_date(TABLE_NAME,'DateTime',conn)
+print(oldestDate)
 if oldestDate == None:
     oldestDate = '2024-01-01'
 
-batting_averages_by_month = get_team_batting_average_by_month(team, shift_date_months(oldestDate,-36), shift_date_months(oldestDate, -1))
+batting_averages_by_month = get_team_batting_average_by_month(team, shift_date_months(oldestDate,-24), shift_date_months(oldestDate, -1))
 
 create_table_from_df(batting_averages_by_month, TABLE_NAME, conn)
 insert_data_from_df(batting_averages_by_month, TABLE_NAME,'DateTime', conn)
