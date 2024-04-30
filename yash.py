@@ -77,7 +77,7 @@ def main():
     if oldestDate == None:
         oldestDate = '2023-09-01'
 
-    daily_dataframe = get_weather_data(42.3314, -83.045753, shift_date(oldestDate,-24), oldestDate)
+    daily_dataframe = get_weather_data(42.3314, -83.045753, shift_date(oldestDate,-25),shift_date(oldestDate, -1))
         
     # Adjust the table creation to reflect the new column name
     create_table_from_df(daily_dataframe, TABLE_NAME, conn)
