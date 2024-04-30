@@ -12,7 +12,7 @@ def get_team_batting_average_by_month(team, start_date, end_date):
         start_year = int(start_year_temp)
 
         end_date_temp = end_date[0:4]
-        end_year = int(end_date_temp)      
+        end_year = int(end_date_temp)  
         
         # Iterate over the specified range of years
         for year in range(start_year, end_year + 1):
@@ -36,7 +36,6 @@ def get_team_batting_average_by_month(team, start_date, end_date):
             # Calculate batting average (H/AB)
             monthly_stats['BA'] = monthly_stats.apply(lambda x: x['H'] / x['AB'] if x['AB'] != 0 else np.nan, axis=1)
             monthly_stats['Year'] = year  # Add year for tracking
-            monthly_stats['teamIDfg'] = team  # Add team ID for tracking
             
             # Remove rows with null or inf values in the batting average column
             monthly_stats = monthly_stats.replace([np.inf, -np.inf], np.nan).dropna(subset=['BA'])
@@ -50,10 +49,57 @@ def get_team_batting_average_by_month(team, start_date, end_date):
             # Append to the main DataFrame
             team_stats = pd.concat([team_stats, monthly_stats], ignore_index=True)
         
-        return team_stats[['DateTime', 'Year', 'Month', 'teamIDfg', 'PA', 'AB', 'H', 'BA']]
-    
+        return team_stats
     except Exception as e:
         print("An error occurred:", e)
+
+def create_team_dataframe():
+    # List of MLB teams and their abbreviations
+    mlb_teams = [
+        {"Team": "Arizona Diamondbacks", "Abbreviation": "ARI"},
+        {"Team": "Atlanta Braves", "Abbreviation": "ATL"},
+        {"Team": "Baltimore Orioles", "Abbreviation": "BAL"},
+        {"Team": "Boston Red Sox", "Abbreviation": "BOS"},
+        {"Team": "Chicago White Sox", "Abbreviation": "CHW"},
+        {"Team": "Chicago Cubs", "Abbreviation": "CHC"},
+        {"Team": "Cincinnati Reds", "Abbreviation": "CIN"},
+        {"Team": "Cleveland Guardians", "Abbreviation": "CLE"},
+        {"Team": "Colorado Rockies", "Abbreviation": "COL"},
+        {"Team": "Detroit Tigers", "Abbreviation": "DET"},
+        {"Team": "Houston Astros", "Abbreviation": "HOU"},
+        {"Team": "Kansas City Royals", "Abbreviation": "KCR"},
+        {"Team": "Los Angeles Angels", "Abbreviation": "LAA"},
+        {"Team": "Los Angeles Dodgers", "Abbreviation": "LAD"},
+        {"Team": "Miami Marlins", "Abbreviation": "MIA"},
+        {"Team": "Milwaukee Brewers", "Abbreviation": "MIL"},
+        {"Team": "Minnesota Twins", "Abbreviation": "MIN"},
+        {"Team": "New York Yankees", "Abbreviation": "NYY"},
+        {"Team": "New York Mets", "Abbreviation": "NYM"},
+        {"Team": "Oakland Athletics", "Abbreviation": "OAK"},
+        {"Team": "Philadelphia Phillies", "Abbreviation": "PHI"},
+        {"Team": "Pittsburgh Pirates", "Abbreviation": "PIT"},
+        {"Team": "San Diego Padres", "Abbreviation": "SDP"},
+        {"Team": "San Francisco Giants", "Abbreviation": "SFG"},
+        {"Team": "Seattle Mariners", "Abbreviation": "SEA"},
+        {"Team": "St. Louis Cardinals", "Abbreviation": "STL"},
+        {"Team": "Tampa Bay Rays", "Abbreviation": "TBR"},
+        {"Team": "Texas Rangers", "Abbreviation": "TEX"},
+        {"Team": "Toronto Blue Jays", "Abbreviation": "TOR"},
+        {"Team": "Washington Nationals", "Abbreviation": "WSH"}
+    ]
+
+    # Create DataFrame
+    team_df = pd.DataFrame(mlb_teams)
+
+    # Assign unique numbers to each team
+    team_df['TeamID'] = range(1, len(team_df) + 1)
+
+    return team_df
+
+# Example usage
+team_dataframe = create_team_dataframe()
+print(team_dataframe)
+
 
 # Example usage
 team = 'NYM'  # New York Mets (using Fangraphs team ID)
