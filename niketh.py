@@ -37,7 +37,7 @@ def get_team_batting_average_by_month(team, start_date, end_date):
             # Calculate batting average (H/AB)
             monthly_stats['BA'] = monthly_stats.apply(lambda x: x['H'] / x['AB'] if x['AB'] != 0 else np.nan, axis=1)
             monthly_stats['Year'] = year  # Add year for tracking
-            monthly_stats['TeamID'] = 19
+            monthly_stats['TeamID'] = 10
             
             # Remove rows with null or inf values in the batting average column
             monthly_stats = monthly_stats.replace([np.inf, -np.inf], np.nan).dropna(subset=['BA'])
@@ -116,7 +116,7 @@ create_table_from_df(team_dataframe, "team_index", conn)
 insert_data_simple(team_dataframe, "team_index", conn)
 
 TABLE_NAME = "batting_average_by_month"
-team = "NYM"
+team = "DET"
 end = "2024-01-01"
 
 # def pull_25_new_search(conn, table_name):
