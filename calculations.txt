@@ -1,9 +1,9 @@
-Caluculation for pytrends, average interest for ice cream out of a hundred
-Average google trends interest in ice cream: 58.44/100
+Calculation for pytrends, average interest for ice cream out of a hundred
+Average google trends interest in ice cream: 15.82/100
 
-calulation mean battting avg in 2022 for mets from baseball API
-New York Mets batting average is 0.236
+Calculation mean battting avg in 2022 for mets from baseball API
+Detroit Tigers batting average is 0.23
 
 How many weather measurements do we have recorded
-Temp Measurements: 75
+Temp Measurements: 100
 
